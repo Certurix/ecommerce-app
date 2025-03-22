@@ -17,6 +17,7 @@ CREATE TABLE produits (
     description TEXT,
     prix DECIMAL(10,2) NOT NULL CHECK (prix > 0),
     stock INT NOT NULL CHECK (stock >= 0),
+    image_url VARCHAR(255),
     categorie_id INT,
     FOREIGN KEY (categorie_id) REFERENCES categories(id) ON DELETE SET NULL
 );
