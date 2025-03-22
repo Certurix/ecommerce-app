@@ -1,7 +1,7 @@
-require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const authRoutes = require('./routes/auth');
+const productRoutes = require('./routes/product');
 const sequelize = require('./config/db');
 
 const app = express();
@@ -9,6 +9,7 @@ const app = express();
 app.use(bodyParser.json());
 
 app.use('/api/auth', authRoutes);
+app.use('/api/products', productRoutes);
 
 const PORT = process.env.PORT || 5000;
 
