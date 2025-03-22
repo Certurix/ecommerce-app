@@ -1,7 +1,7 @@
 CREATE DATABASE ecommerce;
 USE ecommerce;
 
-CREATE USER 'ecommerce_user'@'localhost' IDENTIFIED BY '123456789';
+CREATE USER 'ecommerce_user'@'localhost' IDENTIFIED WITH mysql_native_password BY '123456789';
 GRANT ALL PRIVILEGES ON ecommerce.* TO 'ecommerce_user'@'localhost';
 FLUSH PRIVILEGES;
 
