@@ -16,20 +16,20 @@ export function AccountPage() {
 
   return (
     <div className="container py-12">
-      <h1 className="mb-8 text-3xl font-bold">Account Details</h1>
+      <h1 className="mb-8 text-3xl font-bold">Détails du compte</h1>
       <div className="p-4 border rounded-lg">
         <div className="mb-4">
-          <h2 className="text-lg font-medium">Profile Information</h2>
-          <p className="mt-2">Name: {user.name}</p>
+            <h2 className="text-lg font-medium">Informations du profil</h2>
+          <p className="mt-2">Nom: {user.name}</p>
           <p className="mt-2">Email: {user.email}</p>
         </div>
         <div className="mb-4">
-          <h2 className="text-lg font-medium">Account Actions</h2>
+            <h2 className="text-lg font-medium">Actions du compte</h2>
           <button
             onClick={handleSignOut}
             className="px-4 py-2 mt-2 font-medium text-white bg-red-500 rounded-lg hover:bg-red-600"
           >
-            Sign Out
+            Se déconnecter
           </button>
         </div>
       </div>

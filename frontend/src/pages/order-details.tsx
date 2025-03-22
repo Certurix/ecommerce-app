@@ -30,7 +30,6 @@ export function OrderDetailsPage() {
 
   useEffect(() => {
     const fetchOrderDetails = async () => {
-      // Replace with your own fetch logic
       const response = await fetch(`/api/orders/${id}?user_id=${user.id}`);
       const data = await response.json();
       setOrder(data);
@@ -52,14 +51,14 @@ export function OrderDetailsPage() {
 
   return (
     <div className="container py-12">
-      <h1 className="mb-8 text-3xl font-bold">Order #{order.id}</h1>
+      <h1 className="mb-8 text-3xl font-bold">Commande #{order.id}</h1>
       <div className="p-4 border rounded-lg">
         <div className="mb-4">
-          <h2 className="text-lg font-medium">Order Details</h2>
-          <p className="mt-2">Status: {order.status}</p>
+          <h2 className="text-lg font-medium">Détails</h2>
+          <p className="mt-2">Statut: {order.status}</p>
           <p className="mt-2">Total: ${order.total.toFixed(2)}</p>
-          <p className="mt-2">Shipping Address: {order.shipping_address}</p>
-          <p className="mt-2">Placed on: {new Date(order.created_at).toLocaleDateString()}</p>
+          <p className="mt-2">Adresse de livraison: {order.shipping_address}</p>
+            <p className="mt-2">Passée le: {new Date(order.created_at).toLocaleDateString()}</p>
         </div>
         <div className="mb-4">
           <h2 className="text-lg font-medium">Items</h2>
