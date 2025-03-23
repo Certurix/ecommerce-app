@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuthStore } from "@/lib/store";
+import { Alert } from "@/components/ui/alert";
 
 interface Order {
   id: string;
@@ -38,7 +39,7 @@ export function OrdersPage() {
   }
 
   if (orders.length === 0) {
-    return <div>No orders found.</div>;
+    return <div className="container py-12"><Alert type="warning" message="Vous n'avez pas encore passé de commande." dismissible={false}/></div>;
   }
 
   return (
