@@ -5,12 +5,12 @@ import { useAuthStore } from '@/lib/store';
 interface OrderItem {
   id: string;
   product: {
-    name: string;
-    price: number;
+    nom: string;
+    prix: number;
     image_url: string;
   };
   quantity: number;
-  price: number;
+  prix: number;
 }
 
 interface Order {
@@ -66,13 +66,13 @@ export function OrderDetailsPage() {
             {order.items.map((item) => (
               <div key={item.id} className="flex items-center justify-between p-4 border rounded-lg">
                 <div className="flex items-center">
-                  <img src={item.product.image_url} alt={item.product.name} className="w-20 h-20 rounded-lg" />
+                  <img src={item.product.image_url} alt={item.product.nom} className="w-20 h-20 rounded-lg" />
                   <div className="ml-4">
-                    <h3 className="text-lg font-medium">{item.product.name}</h3>
-                    <p className="text-sm text-gray-500">${item.price.toFixed(2)} x {item.quantity}</p>
+                    <h3 className="text-lg font-medium">{item.product.nom}</h3>
+                    <p className="text-sm text-gray-500">${item.prix.toFixed(2)} x {item.quantity}</p>
                   </div>
                 </div>
-                <div className="text-lg font-medium">${(item.price * item.quantity).toFixed(2)}</div>
+                <div className="text-lg font-medium">${(item.prix * item.quantity).toFixed(2)}</div>
               </div>
             ))}
           </div>
