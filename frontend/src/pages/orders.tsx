@@ -4,9 +4,9 @@ import { useAuthStore } from "@/lib/store";
 
 interface Order {
   id: string;
-  status: string;
+  statut: string;
   total: number;
-  created_at: string;
+  date_commande: string;
 }
 
 export function OrdersPage() {
@@ -16,14 +16,20 @@ export function OrdersPage() {
 
   useEffect(() => {
     const fetchOrders = async () => {
-      const response = await fetch(`/api/orders?user_id=${user.id}`);
+      const response = await fetch(`http://localhost:5000/api/orders?user_id=${user.id}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch orders');
+      }
       const data = await response.json();
       setOrders(data);
       setLoading(false);
     };
 
     if (user) {
-      fetchOrders();
+      fetchOrders().catch(error => {
+        console.error('Error fetching orders:', error);
+        setLoading(false);
+      });
     }
   }, [user]);
 
@@ -44,12 +50,12 @@ export function OrdersPage() {
             <div className="flex justify-between">
               <div>
                 <h2 className="text-lg font-medium">Commande #{order.id}</h2>
-                <p className="text-sm text-gray-500">Statut: {order.status}</p>
+                <p className="text-sm text-gray-500">Statut: {order.statut}</p>
                 <p className="text-sm text-gray-500">
-                  Total: ${order.total.toFixed(2)}
+                  Total: {typeof order.total === 'number' ? order.total.toFixed(2) : order.total} €
                 </p>
                 <p className="text-sm text-gray-500">
-                  Passée le: {new Date(order.created_at).toLocaleDateString()}
+                  Passée le: {new Date(order.date_commande).toLocaleDateString()}
                 </p>
               </div>
               <Link
