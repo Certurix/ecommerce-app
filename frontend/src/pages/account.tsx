@@ -52,6 +52,9 @@ export function AccountPage() {
           <h2 className="text-xl font-semibold">Informations du profil</h2>
           <p className="mt-2 text-gray-700"><strong>Email:</strong> {userData.email}</p>
         </div>
+        <button onClick={() => navigate('/orders')} className="px-4 py-2 font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600">
+          Mes commandes
+        </button>
         <div className="mb-6">
           <h2 className="text-xl font-semibold">Actions du compte</h2>
           <button
