@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useAuthStore } from '@/lib/store';
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useAuthStore } from "@/lib/store";
+import { Alert } from "@/components/ui/alert";
 
 interface OrderItem {
   id: string;
@@ -9,8 +10,8 @@ interface OrderItem {
     prix: number;
     image_url: string;
   };
-  quantity: number;
-  prix: number;
+  quantite: number;
+  prix_unitaire: number;
 }
 
 interface Order {
@@ -19,7 +20,7 @@ interface Order {
   total: number;
   adresse: string;
   date_commande: string;
-  items: OrderItem[];
+  OrderItems: OrderItem[];
 }
 
 export function OrderDetailsPage() {
@@ -27,18 +28,22 @@ export function OrderDetailsPage() {
   const { user } = useAuthStore();
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchOrderDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/orders/${id}?user_id=${user.id}`);
+        const response = await fetch(
+          `http://localhost:5000/api/orders/${id}?user_id=${user.id}`
+        );
         if (!response.ok) {
-          throw new Error('Failed to fetch order details');
+          throw new Error("Failed to fetch order details");
         }
         const data = await response.json();
         setOrder(data);
       } catch (error) {
-        console.error('Error fetching order details:', error);
+        console.error("Error fetching order details:", error);
+        setError("Failed to fetch order details. Please try again later.");
       } finally {
         setLoading(false);
       }
@@ -53,6 +58,12 @@ export function OrderDetailsPage() {
     return <div>Loading...</div>;
   }
 
+  if (error) {
+    return (
+      <Alert type="error" message={error} onClose={() => setError(null)} />
+    );
+  }
+
   if (!order) {
     return <div>Order not found.</div>;
   }
@@ -64,25 +75,56 @@ export function OrderDetailsPage() {
         <div className="mb-4">
           <h2 className="text-lg font-medium">Détails</h2>
           <p className="mt-2">Statut: {order.statut}</p>
-          <p className="mt-2">Total: {typeof order.total === 'number' ? order.total.toFixed(2) : order.total} €</p>
+          <p className="mt-2">
+            Total:{" "}
+            {typeof order.total === "number"
+              ? order.total.toFixed(2)
+              : order.total}{" "}
+            €
+          </p>
           <p className="mt-2">Adresse de livraison: {order.adresse}</p>
-          <p className="mt-2">Passée le: {new Date(order.date_commande).toLocaleDateString()}</p>
+          <p className="mt-2">
+            Passée le: {new Date(order.date_commande).toLocaleDateString()}
+          </p>
         </div>
         <div className="mb-4">
-          <h2 className="text-lg font-medium">Items</h2>
+          <h2 className="text-lg font-medium">Articles</h2>
           <div className="grid grid-cols-1 gap-6">
-            {order.items && order.items.map((item) => (
-              <div key={item.id} className="flex items-center justify-between p-4 border rounded-lg">
-                <div className="flex items-center">
-                  <img src={item.product.image_url} alt={item.product.nom} className="w-20 h-20 rounded-lg" />
-                  <div className="ml-4">
-                    <h3 className="text-lg font-medium">{item.product.nom}</h3>
-                    <p className="text-sm text-gray-500">{item.prix.toFixed(2)} € x {item.quantity}</p>
-                  </div>
-                </div>
-                <div className="text-lg font-medium">{(item.prix * item.quantity).toFixed(2)} €</div>
-              </div>
-            ))}
+            {order.OrderItems &&
+              order.OrderItems.map(
+                (item) => (
+                  console.log(item.Product),
+                  (
+                    <div
+                      key={item.id}
+                      className="flex items-center justify-between p-4 border rounded-lg"
+                    >
+                      <div className="flex items-center">
+                        <img
+                          src={item.Product.image_url}
+                          alt={item.Product.nom}
+                          className="w-20 h-20 rounded-lg"
+                        />
+                        <div className="ml-4">
+                          <h3 className="text-lg font-medium">
+                            {item.Product.nom}
+                          </h3>
+                          <p className="text-sm text-gray-500">
+                            {typeof item.prix_unitaire == "number"
+                              ? item.prix_unitaire.toFixed(2)
+                              : item.prix_unitaire}{" "}
+                            € x {item.quantite}
+                          </p>
+                        </div>
+                      </div>
+                      {typeof item.prix_unitaire === "number"
+                        ? (item.prix_unitaire * item.quantite).toFixed(2)
+                        : item.prix_unitaire * item.quantite}{" "}
+                      €
+                    </div>
+                  )
+                )
+              )}
           </div>
         </div>
       </div>

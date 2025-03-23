@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
-import { ProductCard } from '@/components/product-card';
+import { useEffect, useState } from "react";
+import { ProductCard } from "@/components/product-card";
+import { Alert } from "@/components/ui/alert";
 
 interface Product {
   id: string;
@@ -12,21 +13,24 @@ interface Product {
 export function HomePage() {
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [failedToLoad, setFailedToLoad] = useState(false);
 
   useEffect(() => {
     const fetchFeaturedProducts = async () => {
-      const response = await fetch('http://localhost:5000/api/products/latest');
+      const response = await fetch("http://localhost:5000/api/products/latest");
       const data = await response.json();
-      setFeaturedProducts(data);
-      setLoading(false);
+      if (response.ok) {
+        setFeaturedProducts(data);
+        setLoading(false);
+        setFailedToLoad(false);
+      } else {
+        console.error("Failed to fetch featured products:", data);
+        setFailedToLoad(true);
+      }
     };
 
     fetchFeaturedProducts();
   }, []);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div className="py-12">
@@ -53,11 +57,29 @@ export function HomePage() {
 
         <div className="mb-12">
           <h2 className="mb-8 text-3xl font-bold">Produits Vedettes</h2>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {featuredProducts.map((product) => (
+            {failedToLoad ? (
+            <div className="flex justify-center">
+              <Alert
+              type="error"
+              message="Échec du chargement des produits vedettes."
+              dismissible={false}
+              />
+            </div>
+            ) : loading ? (
+            <div className="flex justify-center">
+              <Alert
+              type="default"
+              message="Chargement des produits vedettes..."
+              dismissible={false}
+              />
+            </div>
+            ) : (
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {featuredProducts.map((product) => (
               <ProductCard key={product.id} {...product} />
-            ))}
-          </div>
+              ))}
+            </div>
+            )}
         </div>
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
