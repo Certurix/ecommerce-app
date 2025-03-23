@@ -7,6 +7,7 @@ import { CartPage } from './pages/cart';
 import { AccountPage } from './pages/account';
 import { OrdersPage } from './pages/orders';
 import { OrderDetailsPage } from './pages/order-details';
+import { ProductDetailsPage } from './pages/product-details';
 import { ProtectedRoute } from './components/protected-route';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/cart" element={<CartPage />} />
+            <Route path="/product/:id" element={<ProductDetailsPage />} />
             <Route
               path="/account"
               element={

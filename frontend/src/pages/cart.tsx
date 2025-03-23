@@ -13,7 +13,7 @@ export function CartPage() {
   };
 
   const total = items.reduce(
-    (sum, item) => sum + item.product.price * item.quantity,
+    (sum, item) => sum + item.product.prix * item.quantity,
     0
   );
 
@@ -38,13 +38,13 @@ export function CartPage() {
                 <div className="flex items-center">
                   <img
                     src={item.product.image_url}
-                    alt={item.product.name}
+                    alt={item.product.nom}
                     className="w-20 h-20 rounded-lg"
                   />
                   <div className="ml-4">
-                    <h2 className="text-lg font-medium">{item.product.name}</h2>
+                    <h2 className="text-lg font-medium">{item.product.nom}</h2>
                     <p className="text-sm text-gray-500">
-                      ${item.product.price.toFixed(2)}
+                      {item.product.prix} €
                     </p>
                   </div>
                 </div>
@@ -76,7 +76,7 @@ export function CartPage() {
             <div className="mt-4">
               <div className="flex justify-between">
                 <span>Sous-total</span>
-                <span>${total.toFixed(2)}</span>
+                <span>{total.toFixed(2)} €</span>
               </div>
               <div className="flex justify-between">
                 <span>Livraison</span>
@@ -84,7 +84,7 @@ export function CartPage() {
               </div>
               <div className="flex justify-between mt-4 font-bold">
                 <span>Total</span>
-                <span>${total.toFixed(2)}</span>
+                <span>{total.toFixed(2)} €</span>
               </div>
               <button className="w-full px-4 py-2 mt-6 font-medium text-white bg-primary rounded-lg hover:bg-primary-dark">
                 Payer

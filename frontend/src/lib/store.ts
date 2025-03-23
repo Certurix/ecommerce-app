@@ -1,21 +1,24 @@
 import { create } from 'zustand';
 
+interface Product {
+  id: string;
+  nom: string;
+  prix: number;
+  image_url: string;
+}
+
 interface CartItem {
   id: string;
   product_id: string;
   quantity: number;
-  product: {
-    name: string;
-    price: number;
-    image_url: string;
-  };
+  product: Product;
 }
 
 interface CartStore {
   items: CartItem[];
   loading: boolean;
   fetchCart: () => Promise<void>;
-  addToCart: (product: CartItem['product'], quantity: number) => Promise<void>;
+  addToCart: (product: Product, quantity: number) => Promise<void>;
   removeFromCart: (productId: string) => Promise<void>;
   updateQuantity: (productId: string, quantity: number) => Promise<void>;
 }
@@ -62,8 +65,13 @@ export const useCartStore = create<CartStore>((set, get) => ({
   },
 }));
 
+interface User {
+  id: string;
+  email: string;
+}
+
 interface AuthStore {
-  user: any | null;
+  user: User | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string) => Promise<void>;
@@ -75,7 +83,8 @@ export const useAuthStore = create<AuthStore>((set) => ({
   loading: false,
   signIn: async (email: string, password: string) => {
     try {
-      const response = await fetch('/api/auth/signin', {
+      set({ loading: true });
+      const response = await fetch('http://localhost:5000/api/auth/signin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -97,7 +106,8 @@ export const useAuthStore = create<AuthStore>((set) => ({
   },
   signUp: async (email: string, password: string) => {
     try {
-      const response = await fetch('/api/auth/signup', {
+      set({ loading: true });
+      const response = await fetch('http://localhost:5000/api/auth/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -119,7 +129,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
   },
   signOut: async () => {
     try {
-      const response = await fetch('/api/auth/signout', {
+      const response = await fetch('http://localhost:5000/api/auth/signout', {
         method: 'POST',
       });
 

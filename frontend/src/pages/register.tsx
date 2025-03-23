@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from '@/lib/store';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "@/lib/store";
 
 export function RegisterPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const { signUp } = useAuthStore();
   const navigate = useNavigate();
 
@@ -12,9 +12,9 @@ export function RegisterPage() {
     e.preventDefault();
     try {
       await signUp(email, password);
-      navigate('/');
+      navigate("/");
     } catch (error) {
-      console.error('Failed to sign up:', error);
+      console.error("Failed to sign up:", error);
     }
   };
 
@@ -24,7 +24,10 @@ export function RegisterPage() {
         <h2 className="text-2xl font-bold text-center">S'inscrire</h2>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
               Adresse email
             </label>
             <input
@@ -38,7 +41,10 @@ export function RegisterPage() {
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700"
+            >
               Mot de passe
             </label>
             <input
