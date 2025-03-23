@@ -10,6 +10,11 @@ CREATE TABLE categories (
     nom VARCHAR(255) NOT NULL UNIQUE
 );
 
+INSERT IGNORE INTO `categories` (`id`, `nom`) VALUES (1, 'Montres hommes');
+INSERT IGNORE INTO `categories` (`id`, `nom`) VALUES (2, 'Montres femmes');
+INSERT IGNORE INTO `categories` (`id`, `nom`) VALUES (3, 'Montres enfants');
+INSERT IGNORE INTO `categories` (`id`, `nom`) VALUES (4, 'Montres connectées');
+
 CREATE TABLE produits (
     id INT AUTO_INCREMENT PRIMARY KEY,
     reference VARCHAR(50) NOT NULL UNIQUE,
@@ -21,6 +26,10 @@ CREATE TABLE produits (
     categorie_id INT,
     FOREIGN KEY (categorie_id) REFERENCES categories(id) ON DELETE SET NULL
 );
+
+INSERT IGNORE INTO `produits` (`id`, `reference`, `nom`, `description`, `prix`, `stock`, `categorie_id`, `image_url`) VALUES (1, 'REF-H1-001', 'Montre de luxe homme', 'Une montre adaptée pour le business', 299.99, 28, 1, 'https://images.unsplash.com/photo-1623998021450-85c29c644e0d');
+INSERT IGNORE INTO `produits` (`id`, `reference`, `nom`, `description`, `prix`, `stock`, `categorie_id`, `image_url`) VALUES (2, 'REF-W1-001', 'Montre élégante femme', 'Une montre adaptée pour les femmes', 149.99, 4, 2, 'https://images.unsplash.com/photo-1523275335684-37898b6baf30');
+INSERT IGNORE INTO `produits` (`id`, `reference`, `nom`, `description`, `prix`, `stock`, `categorie_id`, `image_url`) VALUES (3, 'REF-K1-001', 'Montre enfant', 'Une montre adaptée pour les enfants', 69.99, 14, 3, 'montre-enfant.jpg');
 
 CREATE TABLE commandes (
     id INT AUTO_INCREMENT PRIMARY KEY,
