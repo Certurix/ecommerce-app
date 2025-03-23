@@ -24,11 +24,12 @@ CREATE TABLE produits (
 
 CREATE TABLE commandes (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    client_nom VARCHAR(255) NOT NULL,
-    client_email VARCHAR(255) NOT NULL,
+    user_id INT NOT NULL,
     total DECIMAL(10,2) NOT NULL CHECK (total >= 0),
     statut ENUM('En attente', 'Payée', 'Expédiée', 'Livrée', 'Annulée') DEFAULT 'En attente',
-    date_commande TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    date_commande TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    adresse VARCHAR(255),
+    FOREIGN KEY (user_id) REFERENCES utilisateurs(id) ON DELETE CASCADE
 );
 
 CREATE TABLE details_commande (
@@ -39,12 +40,4 @@ CREATE TABLE details_commande (
     prix_unitaire DECIMAL(10,2) NOT NULL CHECK (prix_unitaire >= 0),
     FOREIGN KEY (commande_id) REFERENCES commandes(id) ON DELETE CASCADE,
     FOREIGN KEY (produit_id) REFERENCES produits(id) ON DELETE CASCADE
-);
-
-CREATE TABLE historique_commandes (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    commande_id INT NOT NULL,
-    statut VARCHAR(50) NOT NULL,
-    date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (commande_id) REFERENCES commandes(id) ON DELETE CASCADE
 );
