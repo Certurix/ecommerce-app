@@ -21,6 +21,7 @@ interface CartStore {
   addToCart: (product: Product, quantity: number) => Promise<void>;
   removeFromCart: (productId: string) => Promise<void>;
   updateQuantity: (productId: string, quantity: number) => Promise<void>;
+  clearCart: () => void;
 }
 
 export const useCartStore = create<CartStore>((set, get) => ({
@@ -62,6 +63,10 @@ export const useCartStore = create<CartStore>((set, get) => ({
         set({ items: cart, loading: false });
       }
     }
+  },
+  clearCart: () => {
+    localStorage.removeItem('cart');
+    set({ items: [] });
   },
 }));
 

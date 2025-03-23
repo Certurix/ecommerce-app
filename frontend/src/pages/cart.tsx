@@ -1,8 +1,11 @@
 import { useCartStore } from "@/lib/store";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuthStore } from "@/lib/store";
 
 export function CartPage() {
-  const { items, updateQuantity, removeFromCart } = useCartStore();
+  const { items, updateQuantity, removeFromCart, clearCart } = useCartStore();
+  const { user } = useAuthStore();
+  const navigate = useNavigate();
 
   const handleQuantityChange = (productId: string, quantity: number) => {
     updateQuantity(productId, quantity);
@@ -10,6 +13,33 @@ export function CartPage() {
 
   const handleRemove = (productId: string) => {
     removeFromCart(productId);
+  };
+
+  const handleCheckout = async () => {
+    const orderItems = items.map((item) => ({
+      product_id: item.product_id,
+      quantity: item.quantity,
+      prix: item.product.prix,
+    }));
+
+    const response = await fetch("http://localhost:5000/api/orders", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_id: user.id,
+        items: orderItems,
+        shipping_address: "7 Rue Jean-Marie Leclair, 69009 Lyon",
+      }),
+    });
+
+    if (response.ok) {
+      clearCart();
+      navigate("/orders");
+    } else {
+      console.error("Failed to create order");
+    }
   };
 
   const total = items.reduce(
@@ -86,7 +116,10 @@ export function CartPage() {
                 <span>Total</span>
                 <span>{total.toFixed(2)} €</span>
               </div>
-              <button className="w-full px-4 py-2 mt-6 font-medium text-white bg-primary rounded-lg hover:bg-primary-dark">
+              <button
+                onClick={handleCheckout}
+                className="w-full px-4 py-2 mt-6 font-medium text-white bg-primary rounded-lg hover:bg-primary-dark"
+              >
                 Payer
               </button>
             </div>
