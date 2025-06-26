@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend:dev\"",
+    "start": "concurrently \"npm run backend\" \"npm run frontend:build\"",
     "install": "concurrently \"npm run backend-install\" \"npm run frontend-install\"",
     "frontend-install": "cd frontend && npm install",
     "backend-install": "cd backend && npm install",
-    "frontend": "cd frontend && npm run dev",
+    "frontend:dev": "cd frontend && npm run dev",
+    "frontend:build": "cd frontend && npm run build",
     "backend": "cd backend && npm start"
   },
   "keywords": [],
