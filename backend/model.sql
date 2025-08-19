@@ -5,6 +5,12 @@ CREATE USER 'ecommerce_user'@'localhost' IDENTIFIED WITH mysql_native_password B
 GRANT ALL PRIVILEGES ON ecommerce.* TO 'ecommerce_user'@'localhost';
 FLUSH PRIVILEGES;
 
+CREATE TABLE utilisateurs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    
+);
+
 CREATE TABLE categories (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(255) NOT NULL UNIQUE
