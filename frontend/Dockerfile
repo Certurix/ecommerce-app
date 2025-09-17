@@ -1,18 +1,19 @@
-# Frontend Dockerfile - Build React/Vite application and serve with nginx
+# Frontend Dockerfile - Multi-stage build with build script
 FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Install build dependencies
-RUN apk add --no-cache python3 make g++
-
-# Copy package files and install all dependencies
+# Copy package files
 COPY package*.json ./
-RUN npm install --include=dev
 
-# Copy source code and build
+# Install dependencies with retry logic
+RUN for i in 1 2 3; do npm install && break || sleep 30; done
+
+# Copy source files
 COPY . .
-RUN npx vite build
+
+# Build the application
+RUN npm run build
 
 # Production stage - serve built files
 FROM nginx:alpine AS production

@@ -1,17 +1,17 @@
 # Backend Dockerfile - Multi-stage build for Node.js application
-FROM node:22-alpine AS builder
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
 # Install dependencies first for better caching
 COPY package*.json ./
-RUN npm cache clean --force && npm install
+RUN npm install
 
 # Copy source code
 COPY . .
 
 # Production stage
-FROM node:22-alpine AS production
+FROM node:20-alpine AS production
 
 WORKDIR /app
 
@@ -21,7 +21,7 @@ RUN addgroup -g 1001 -S nodejs && \
 
 # Copy package files and install production dependencies
 COPY --from=builder /app/package*.json ./
-RUN npm cache clean --force && npm install --production && npm cache clean --force
+RUN npm install --production && npm cache clean --force
 
 # Copy application code
 COPY --from=builder /app/src ./src

@@ -2,15 +2,15 @@
 # This Dockerfile builds both frontend and serves it from the backend
 
 # Frontend build stage
-FROM node:22-alpine AS frontend-builder
+FROM node:20-alpine AS frontend-builder
 
 WORKDIR /app/frontend
 
 # Copy frontend package files
 COPY frontend/package*.json ./
 
-# Install frontend dependencies
-RUN npm ci --only=production
+# Install frontend dependencies with retry
+RUN for i in 1 2 3; do npm install && break || sleep 30; done
 
 # Copy frontend source
 COPY frontend/ ./
@@ -19,21 +19,21 @@ COPY frontend/ ./
 RUN npm run build
 
 # Backend build stage  
-FROM node:22-alpine AS backend-builder
+FROM node:20-alpine AS backend-builder
 
 WORKDIR /app/backend
 
 # Copy backend package files
 COPY backend/package*.json ./
 
-# Install backend dependencies
-RUN npm ci
+# Install backend dependencies with retry
+RUN for i in 1 2 3; do npm install && break || sleep 30; done
 
 # Copy backend source
 COPY backend/ ./
 
 # Production stage
-FROM node:22-alpine AS production
+FROM node:20-alpine AS production
 
 WORKDIR /app
 
@@ -43,7 +43,7 @@ RUN addgroup -g 1001 -S nodejs && \
 
 # Copy backend package files and install production dependencies
 COPY backend/package*.json ./
-RUN npm cache clean --force && npm install --production && npm cache clean --force
+RUN for i in 1 2 3; do npm install --production && break || sleep 30; done && npm cache clean --force
 
 # Copy backend source code
 COPY --from=backend-builder /app/backend/src ./src
