@@ -34,7 +34,7 @@ export function OrderDetailsPage() {
     const fetchOrderDetails = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/orders/${id}?user_id=${user.id}`
+          `${import.meta.env.VITE_API_URL}/api/orders/${id}?user_id=${user.id}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch order details");
