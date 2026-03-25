@@ -12,6 +12,8 @@ const OrderItem = require('./models/OrderItem');
 const Product = require('./models/Product');
 const User = require('./models/User');
 
+const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
+
 // Define associations
 Order.hasMany(OrderItem, { foreignKey: 'commande_id' });
 OrderItem.belongsTo(Order, { foreignKey: 'commande_id' });
@@ -20,6 +22,15 @@ OrderItem.belongsTo(Product, { foreignKey: 'produit_id' });
 const app = express();
 
 app.use(bodyParser.json());
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', FRONTEND_URL);
+  res.header('Vary', 'Origin');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, x-user-id');
+
+  next();
+});
 
 // API routes
 app.use('/api/auth', authRoutes);
