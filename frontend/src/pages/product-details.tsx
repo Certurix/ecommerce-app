@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useCartStore } from '@/lib/store';
+import { API_URL } from '@/lib/config';
 
 interface Product {
   id: string;
@@ -21,7 +22,7 @@ export function ProductDetailsPage() {
 
   useEffect(() => {
     const fetchProductDetails = async () => {
-      const response = await fetch(`http://localhost:5000/api/products/${id}`);
+      const response = await fetch(`${API_URL}/api/products/${id}`);
       const data = await response.json();
       setProduct(data);
       setLoading(false);

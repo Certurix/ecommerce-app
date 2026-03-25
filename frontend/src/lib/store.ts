@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { API_URL } from '@/lib/config';
 
 interface Product {
   id: string;
@@ -89,7 +90,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
   signIn: async (email: string, password: string) => {
     try {
       set({ loading: true });
-      const response = await fetch('http://localhost:5000/api/auth/signin', {
+      const response = await fetch(`${API_URL}/api/auth/signin`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -112,7 +113,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
   signUp: async (email: string, password: string) => {
     try {
       set({ loading: true });
-      const response = await fetch('http://localhost:5000/api/auth/signup', {
+      const response = await fetch(`${API_URL}/api/auth/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -134,7 +135,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
   },
   signOut: async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/signout', {
+      const response = await fetch(`${API_URL}/api/auth/signout`, {
         method: 'POST',
       });
 

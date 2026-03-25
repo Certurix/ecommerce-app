@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ProductCard } from "@/components/product-card";
 import { Alert } from "@/components/ui/alert";
+import { API_URL } from "@/lib/config";
 
 interface Product {
   id: string;
@@ -17,7 +18,7 @@ export function HomePage() {
 
   useEffect(() => {
     const fetchFeaturedProducts = async () => {
-      const response = await fetch("http://localhost:5000/api/products/latest");
+      const response = await fetch(`${API_URL}/api/products/latest`);
       const data = await response.json();
       if (response.ok) {
         setFeaturedProducts(data);

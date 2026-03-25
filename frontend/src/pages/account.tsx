@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/lib/store";
+import { API_URL } from "@/lib/config";
 
 interface User {
   id: string;
@@ -16,7 +17,7 @@ export function AccountPage() {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const response = await fetch('http://localhost:5000/api/auth/me', {
+      const response = await fetch(`${API_URL}/api/auth/me`, {
         headers: {
           'x-user-id': user?.id,
         },

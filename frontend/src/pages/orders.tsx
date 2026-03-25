@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuthStore } from "@/lib/store";
 import { Alert } from "@/components/ui/alert";
+import { API_URL } from "@/lib/config";
 
 interface Order {
   id: string;
@@ -17,7 +18,7 @@ export function OrdersPage() {
 
   useEffect(() => {
     const fetchOrders = async () => {
-      const response = await fetch(`http://localhost:5000/api/orders?user_id=${user.id}`);
+      const response = await fetch(`${API_URL}/api/orders?user_id=${user.id}`);
       if (!response.ok) {
         throw new Error('Failed to fetch orders');
       }

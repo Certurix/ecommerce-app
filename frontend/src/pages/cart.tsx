@@ -1,6 +1,7 @@
 import { useCartStore } from "@/lib/store";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/lib/store";
+import { API_URL } from "@/lib/config";
 
 export function CartPage() {
   const { items, updateQuantity, removeFromCart, clearCart } = useCartStore();
@@ -22,7 +23,7 @@ export function CartPage() {
       prix: item.product.prix,
     }));
 
-    const response = await fetch("http://localhost:5000/api/orders", {
+    const response = await fetch(`${API_URL}/api/orders`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
